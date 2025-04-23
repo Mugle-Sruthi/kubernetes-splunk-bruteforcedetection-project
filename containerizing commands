@@ -1,0 +1,28 @@
+containerizing commands 
+firstly install docker 
+docker --version
+sudo dnf install docker -y
+sudo systemctl start docker
+sudo systemctl enable docker
+systemctl status docker 
+systemctl --user start docker-desktop
+systemctl --user status docker-desktop
+
+
+open docker desktop 
+and login to docker hub 
+
+
+Building docker image 
+   docker build -t bruteforcedetection .
+running the image 
+  sudo docker run -p 5000:5000 bruteforcedetection
+
+tagging image 
+   docker tag bruteforcedetection sruthimugle19/devops:latest
+
+pushing image  to docker hub 
+docker login
+docker push sruthimugle19/devops:latest
+
+#thank you i hope you understood
