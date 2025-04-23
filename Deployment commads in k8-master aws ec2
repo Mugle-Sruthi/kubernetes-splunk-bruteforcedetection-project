@@ -63,3 +63,56 @@ spec:
     port: 80
     targetPort: 5000
 
+1. nano bruteforce-detection.yaml
+• This opens the file flask-deployment.yaml in the Nano text editor.
+• You use it to write or edit your Kubernetes deployment and service configuration.
+2. kubectl apply -f bruteforce-detection.yaml
+• This command tells Kubernetes to apply the configuration written in flask-deployment.yaml.
+• It will create or update the Deployment and Service described in the YAML file.
+3. kubectl get pods
+• Displays the current list of Pods running in your default namespace.
+• Shows details like pod name, status (Running, Pending, etc.), and readiness.
+4. kubectl get deployment
+• Lists all Deployments in your current namespace.
+• You’ll see the deployment name, number of pods created, and their status.
+5. kubectl get services
+• Lists all the Services created in your namespace.
+• Helps you verify that your Flask app is exposed via a Service (like NodePort or ClusterIP).
+6. kubectl get pods --all-namespaces
+• Lists all pods across all namespaces in your Kubernetes cluster.
+• Useful when you're checking if system-level components (like DNS or monitoring agents) are running
+properly.
+7. kubectl cluster-info
+• Displays information about the Kubernetes master and services, like the API server and DNS.
+• Helps confirm that your cluster is up and running.8. kubectl get svc
+• This is a shorthand for kubectl get services.
+• It shows the list of services, their types (e.g., ClusterIP, NodePort), and the external port mapping if
+any.
+8. kubectl get svc
+• This is a shorthand for kubectl get services.
+• It shows the list of services, their types (e.g., ClusterIP, NodePort), and the external port mapping if
+any.
+
+Now after that access on Public ip of ec2 master instance and specific port
+http://ec-2-public-ip:<portnumber>
+
+4.3 Stored logs are in :
+kubectl get pods
+kubectl exec -it bruteforce-detection-5ddcdf7447-hkpwq -- /bin/bash
+root@ip-172-31-17-235:/home/ubuntu# kubectl get pods
+NAME
+READY STATUS RESTARTS AGE
+flask-app-5ddcdf7447-hkpwq 1/1 Running 0
+17m
+root@ip-172-31-17-235:/home/ubuntu# kubectl exec -it bruteforce-detection-5ddcdf7447-hkpwq -- /bin/bash
+root@flask-app-5ddcdf7447-hkpwq:/app# ls -l /var/log/app
+cat /var/log/app/login_attempts.log
+total 4
+-rw-r--r-- 1 root root 330 Apr 9 12:24 login_attempts.log
+2025-04-09 12:18:54.258496 | Username: admin | Status: Success
+2025-04-09 12:19:28.882961 | Username: test | Status: Suspicious
+2025-04-09 12:21:47.193320 | Username: LKJBSACIYYUHKF | Status: Failed
+2025-04-09 12:23:12.802402 | Username: d;ojihpofj;l | Status: Failed
+2025-04-09 12:24:15.819094 | Username: admin | Status: Failed
+root@flask-app-5ddcdf7447-hkpwq:/app#
+
