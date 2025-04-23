@@ -1,0 +1,65 @@
+Deployment commands 
+#deploying yaml file commands in k8 master 
+nano bruteforce-detection.yaml
+kubectl create -f bruteforce-detection.yaml
+kubectl get pods
+kubectl get deployment
+kubectl get services
+kubectl get pods --all-namespaces
+kubectl cluster-info
+
+#creating service 
+
+kubectl create service nodeport bruteforce-detection --tcp=80:80
+kubectl get svc
+
+now access via master public ip and given port 
+
+yaml file  named bruteforce-detection
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bruteforce-detection
+  labels:
+    app: bruteforce
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bruteforce
+  template:
+    metadata:
+      labels:
+        app: bruteforce
+    spec:
+      containers:
+      - name: bruteforce-container
+        image: sruthimugle19/devops:latest
+        ports:
+        - containerPort: 5000
+        env:
+        - name: APP_SECRET_KEY
+          value: "your-secret-key"
+        volumeMounts:
+        - name: log-volume
+          mountPath: /var/log/app
+      volumes:
+      - name: log-volume
+        emptyDir: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bruteforce-service
+spec:
+  selector:
+    app: bruteforce
+  type: LoadBalancer  # Use NodePort if not using cloud load balancer
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 5000
+
